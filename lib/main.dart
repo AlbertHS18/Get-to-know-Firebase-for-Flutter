@@ -19,6 +19,7 @@ void main() {
 }
 
 // Add GoRouter configuration outside the App class
+// Add GoRouter configuration outside the App class
 final _router = GoRouter(
   routes: [
     GoRoute(
