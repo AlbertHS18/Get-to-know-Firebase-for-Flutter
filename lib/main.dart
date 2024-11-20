@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';               // new
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';                 // new
 
-import 'src/app_state.dart';                                 // new
+import 'app_state.dart';                                 // new
 import 'home_page.dart';
 
 void main() {
