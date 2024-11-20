@@ -1,11 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart' // new
-    hide EmailAuthProvider, PhoneAuthProvider;    // new
-import 'package:flutter/material.dart';           // new
-import 'package:provider/provider.dart';          // new
+import 'package:firebase_auth/firebase_auth.dart'; // nuevo, corregido
+import 'package:flutter/material.dart';           // nuevo
+import 'package:provider/provider.dart';          // nuevo
 
-import 'app_state.dart';                          // new
-import 'src/authentication.dart';                 // new
+import 'app_state.dart';                          // nuevo
+import 'src/authentication.dart';                 // nuevo
 import 'src/widgets.dart';
+import 'guest_book.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,15 +22,15 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 8),
           const IconAndDetail(Icons.calendar_today, 'October 30'),
           const IconAndDetail(Icons.location_city, 'San Francisco'),
-          // Add from here
+          // Consumer widget to handle state changes
           Consumer<ApplicationState>(
             builder: (context, appState, _) => AuthFunc(
-                loggedIn: appState.loggedIn,
-                signOut: () {
-                  FirebaseAuth.instance.signOut();
-                }),
+              loggedIn: appState.loggedIn,
+              signOut: () {
+                FirebaseAuth.instance.signOut();
+              },
+            ),
           ),
-          // to here
           const Divider(
             height: 8,
             thickness: 1,
@@ -41,6 +41,16 @@ class HomePage extends StatelessWidget {
           const Header("What we'll be doing"),
           const Paragraph(
             'Join us for a day full of Firebase Workshops and Pizza!',
+          ),
+          // Add the following two lines.
+          const Header('Discussion'),
+          // Aquí se llama al método `addMessage` de `ApplicationState`
+          Consumer<ApplicationState>(
+            builder: (context, appState, _) => GuestBook(
+              addMessage: (message) async {
+                await appState.addMessageToGuestBook(message);
+              },
+            ),
           ),
         ],
       ),

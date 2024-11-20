@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart'; // Necesario para usar Firestore
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
@@ -16,7 +17,8 @@ class ApplicationState extends ChangeNotifier {
 
   Future<void> init() async {
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
     FirebaseUIAuth.configureProviders([
       EmailAuthProvider(),
@@ -29,6 +31,20 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = false;
       }
       notifyListeners();
+    });
+  }
+
+  // Aquí se agrega el método para enviar un mensaje al guestbook
+  Future<DocumentReference> addMessageToGuestBook(String message) async {
+    if (!_loggedIn) {
+      throw Exception('Must be logged in');
+    }
+
+    return FirebaseFirestore.instance.collection('guestbook').add({
+      'text': message, // El mensaje que el usuario ha dejado
+      'timestamp': DateTime.now().millisecondsSinceEpoch, // Marca de tiempo
+      'name': FirebaseAuth.instance.currentUser!.displayName, // Nombre del usuario
+      'userId': FirebaseAuth.instance.currentUser!.uid, // ID del usuario
     });
   }
 }
