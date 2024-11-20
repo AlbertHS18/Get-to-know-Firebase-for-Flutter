@@ -46,10 +46,18 @@ class HomePage extends StatelessWidget {
           const Header('Discussion'),
           // Aquí se llama al método `addMessage` de `ApplicationState`
           Consumer<ApplicationState>(
-            builder: (context, appState, _) => GuestBook(
-              addMessage: (message) async {
-                await appState.addMessageToGuestBook(message);
-              },
+            builder: (context, appState, _) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (appState.loggedIn) ...[
+                  const Header('Discussion'),
+                  GuestBook(
+                    addMessage: (message) =>
+                        appState.addMessageToGuestBook(message),
+                    messages: appState.guestBookMessages, // new
+                  ),
+                ],
+              ],
             ),
           ),
         ],
