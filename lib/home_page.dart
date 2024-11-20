@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 8),
           const IconAndDetail(Icons.calendar_today, 'October 30'),
           const IconAndDetail(Icons.location_city, 'San Francisco'),
-          // Consumer widget to handle state changes
+          // Manejando estado de autenticación
           Consumer<ApplicationState>(
             builder: (context, appState, _) => AuthFunc(
               loggedIn: appState.loggedIn,
@@ -42,26 +42,25 @@ class HomePage extends StatelessWidget {
           const Paragraph(
             'Join us for a day full of Firebase Workshops and Pizza!',
           ),
-          // Add the following two lines.
-          const Header('Discussion'),
-          // Aquí se llama al método `addMessage` de `ApplicationState`
+          // Condicional para el inicio de sesión
           Consumer<ApplicationState>(
-            builder: (context, appState, _) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (appState.loggedIn) ...[
-                  const Header('Discussion'),
-                  GuestBook(
-                    addMessage: (message) =>
-                        appState.addMessageToGuestBook(message),
-                    messages: appState.guestBookMessages, // new
-                  ),
-                ],
-              ],
-            ),
+            builder: (context, appState, _) => appState.loggedIn
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Header('Discussion'),
+                      GuestBook(
+                        addMessage: (message) =>
+                            appState.addMessageToGuestBook(message),
+                        messages: appState.guestBookMessages,
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(), // Espacio vacío si no está logueado
           ),
         ],
       ),
     );
   }
 }
+
