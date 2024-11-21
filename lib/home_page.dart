@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   )
-                : const SizedBox.shrink(), // Espacio vacío si no está logueado
+                : const SizedBox.shrink(), 
           ),
         ],
       ),

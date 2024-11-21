@@ -1,3 +1,14 @@
+// Archivo build.gradle a nivel del proyecto
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.6.3' // Versión del plugin de Gradle
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -5,6 +16,7 @@ allprojects {
     }
 }
 
+// Configuración para las carpetas de salida del build
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
@@ -13,6 +25,7 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Tarea para limpiar los builds
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
